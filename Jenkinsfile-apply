@@ -21,7 +21,8 @@ pipeline {
         branch 'master'
       }
       steps {
-
+        sh 'oc apply -k config'
+        sh './wait_oauth.sh'
       }
     }
     stage ('Verify test user') {
@@ -29,7 +30,9 @@ pipeline {
         branch 'master'
       }
       steps {
-        sh 'oc login -u testuser -p redhat123 --insecure-skip-tls-verify https://kubernetes.default.svc:443' sh 'oc new-project test-testuser || true'
+        sh 'oc login -u testuser -p redhat123 --insecure-skip-tls-verify \
+https://kubernetes.default.svc:443'
+        sh 'oc new-project test-testuser || true'
       }
     }
   }
